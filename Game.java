@@ -38,37 +38,48 @@ public class Game {
         //Main Game Loop
         while (stillPlaying == true) {
             userResponse = userInput.nextLine().toUpperCase();
-
-            if (userResponse.contains("EXITGAME")) {
-                stillPlaying = false;
-            }
-            if (userResponse.equals("LOOKAROUND")) {
-                player.lookAround();
-            }
-            if (userResponse.contains("TALKTO")) {
-                String name = userResponse.split(" ")[1]; // split user response at every space and take the second word. this should be all uppercase
-                if (!train.cars[player.location].carPassengers.containsKey(name)) { // if name not in carPassengers, print error
-                    System.out.println("Please enter valid passenger.");
-                } else {
-                    player.talkTo(name);
+            if (userResponse.contains("EXIT GAME") || userResponse.contains("END GAME") || userResponse.contains("QUIT") || userResponse.contains("LOOK AROUND") || userResponse.contains("TALK TO") || userResponse.contains("PICK UP") || userResponse.contains("NEXTCAR") || userResponse.contains("NEXT CAR") || userResponse.contains("FORWARD") ||  userResponse.contains("PREVIOUSCAR") || userResponse.contains("PREVIOUS CAR") || userResponse.contains("BACKWARD")){
+                if (userResponse.contains("EXIT GAME") || userResponse.contains("END GAME") || userResponse.contains("QUIT")) {
+                    System.out.println("You've ended your game of ZONK, I hope you travel with us again!");
+                    stillPlaying = false;
                 }
-            }
-            if (userResponse.contains("PICKUP")) {
-                String name = userResponse.split(" ")[1];
-                if (!train.cars[player.location].carItems.containsKey(name)) {
-                    System.out.println("Please enter valid item name.");
-                } else {
-                    player.pickUp(name);
+                if (userResponse.contains("LOOK AROUND")) {
+                    player.lookAround();
                 }
-            }
-            if (userResponse.contains("NEXTCAR")) {
-                player.nextCar();
-            }
-            if (userResponse.contains("PREVIOUSCAR") && player.holding("KEYCARD")) {
-                player.previousCar();
+                if (userResponse.contains("TALK TO")) {
+                    String name = userResponse.split(" ")[2]; // split user response at every space and take the second word. this should be all uppercase
+                    if (!train.cars[player.location].carPassengers.containsKey(name)) { // if name not in carPassengers, print error
+                        System.out.println("Please enter valid passenger.");
+                    } else {
+                        player.talkTo(name);
+                    }
+                }
+                if (userResponse.contains("PICK UP")) {
+                    String name = userResponse.split(" ")[2];
+                    if (!train.cars[player.location].carItems.containsKey(name)) {
+                        System.out.println("Please enter valid item name.");
+                    } else {
+                        player.pickUp(name);
+                    }
+                }
+                if (userResponse.contains("NEXTCAR") || userResponse.contains("NEXT CAR") || userResponse.contains("FORWARD")) {
+                  if (player.holding("KEYCARD")){
+                    player.nextCar();
+                  }
+                  else {
+                    System.out.println("You don't have the credentials to move to the next car");
+                  }
+                }
+                if (userResponse.contains("PREVIOUSCAR") || userResponse.contains("PREVIOUS CAR") || userResponse.contains("BACKWARD")) {
+                  if (player.holding("KEYCARD")){
+                    player.previousCar();
+                  }
+                  else {
+                    System.out.println("You don't have the credentials to move to the next car");
+                  }
+                }
             }
         }
-
         //Close out game
         userInput.close();
     }
